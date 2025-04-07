@@ -15,7 +15,7 @@ class PetrovaksBot:
         params["auth"] = auth.get("application_token")  
 
         try:
-            response = requests.post(url, headers=headers, json=params)
+            response = requests.post(url, json=params)
             response.raise_for_status()
             result = response.json()
 
