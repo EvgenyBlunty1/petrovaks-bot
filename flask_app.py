@@ -114,3 +114,11 @@ def handle_webhook():
         bot.send_message(dialog_id, "Пожалуйста, нажми на кнопку 👇")
 
     return jsonify({"status": "ok"}), 200
+
+@app.route('/log')
+def view_log():
+    try:
+        with open("log.txt", "r", encoding="utf-8") as f:
+            return "<pre>" + f.read() + "</pre>"
+    except Exception as e:
+        return f"Ошибка чтения логов: {e}"
