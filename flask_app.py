@@ -108,10 +108,22 @@ def handle_webhook():
         user_id = int(event_data.get("data[PARAMS][USER_ID]", 0))
         bot.handle_new_user(dialog_id, user_id)
 
-    elif event_type == "ONIMBOTMESSAGEADD":
-        dialog_id = event_data.get("data[PARAMS][DIALOG_ID]")
-        user_id = int(event_data.get("data[PARAMS][FROM_USER_ID]", 0))
-        bot.send_message(dialog_id, "Пожалуйста, нажми на кнопку 👇")
+elif event_type == "ONIMBOTMESSAGEADD":
+    dialog_id = event_data.get("data[PARAMS][DIALOG_ID]")
+    user_id = int(event_data.get("data[PARAMS][FROM_USER_ID]", 0))
+
+    # Попытка извлечь нажатую кнопку
+    try:
+        action_value = event_data["data[PARAMS][ATTACH][KEYBOARD][BUTTONS][0][ACTION_VALUE]"]
+        payload = json.loads(action_value)
+        bot.handle_user_response(user_id, payload)
+    except Exception as e:
+        # Если не кнопка — обычный текст
+        message = event_data.get("data[PARAMS][MESSAGE]", "").lower()
+        if "привет" in message:
+            bot.send_message(dialog_id, "Привет, я бот Петровакс! 👋")
+        else:
+            bot.send_message(dialog_id, "Пожалуйста, нажми на кнопку 👇")
 
     return jsonify({"status": "ok"}), 200
 
