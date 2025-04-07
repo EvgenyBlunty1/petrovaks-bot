@@ -109,8 +109,8 @@ def handle_webhook():
         bot.handle_new_user(dialog_id, user_id)
 
     elif event_type == "ONIMBOTMESSAGEADD":
-    dialog_id = event_data.get("data[PARAMS][DIALOG_ID]")
-    user_id = int(event_data.get("data[PARAMS][FROM_USER_ID]", 0))
+        dialog_id = event_data.get("data[PARAMS][DIALOG_ID]")
+        user_id = int(event_data.get("data[PARAMS][FROM_USER_ID]", 0))
 
     # Попытка извлечь нажатую кнопку
     try:
