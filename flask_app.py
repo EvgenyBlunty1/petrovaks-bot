@@ -12,10 +12,7 @@ class PetrovaksBot:
 
     def call_api_method(self, method: str, params: Dict, auth: Dict) -> Optional[Dict]:
         url = f"{auth['client_endpoint']}{method}"
-        headers = {
-            "Authorization": f"Bearer {auth['access_token']}",
-            "Content-Type": "application/json"
-        }
+        params["auth"] = auth.get("application_token")  
 
         try:
             response = requests.post(url, headers=headers, json=params)
