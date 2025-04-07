@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: petrovaks-bot
+    runtime: python
+    buildCommand: ""
+    startCommand: gunicorn flask_app:app
