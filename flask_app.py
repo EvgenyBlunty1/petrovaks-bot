@@ -12,7 +12,16 @@ class PetrovaksBot:
 
     def call_api_method(self, method: str, params: Dict, auth: Dict) -> Optional[Dict]:
         url = f"{auth['client_endpoint']}{method}"
-        params["auth"] = auth.get("application_token")  
+
+        # 🔐 Передаём либо access_token, либо весь auth-блок
+        if "access_token" in auth:
+            params["auth"] = auth["access_token"]
+        else:
+            params["auth"] = {
+                "application_token": auth.get("application_token"),
+                "domain": auth.get("domain"),
+                "member_id": auth.get("member_id")
+            }
 
         try:
             response = requests.post(url, json=params)
@@ -72,7 +81,8 @@ bot = PetrovaksBot()
 def handle_webhook():
     event_data = request.form.to_dict()
     auth = {
-        "access_token": event_data.get("auth[application_token]"),
+        "access_token": event_data.get("auth[access_token]"),
+        "application_token": event_data.get("auth[application_token]"),
         "domain": event_data.get("auth[domain]"),
         "client_endpoint": event_data.get("auth[client_endpoint]"),
         "server_endpoint": event_data.get("auth[server_endpoint]"),
