@@ -108,7 +108,7 @@ def handle_webhook():
         user_id = int(event_data.get("data[PARAMS][USER_ID]", 0))
         bot.handle_new_user(dialog_id, user_id)
 
-elif event_type == "ONIMBOTMESSAGEADD":
+    elif event_type == "ONIMBOTMESSAGEADD":
     dialog_id = event_data.get("data[PARAMS][DIALOG_ID]")
     user_id = int(event_data.get("data[PARAMS][FROM_USER_ID]", 0))
 
